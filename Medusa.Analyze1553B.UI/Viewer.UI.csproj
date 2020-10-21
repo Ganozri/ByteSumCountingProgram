@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>medusaIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Icons\**" />
+    <Compile Remove="Styles\**" />
+    <EmbeddedResource Remove="Icons\**" />
+    <EmbeddedResource Remove="Styles\**" />
+    <None Remove="Icons\**" />
+    <None Remove="Styles\**" />
+    <Page Remove="Icons\**" />
+    <Page Remove="Styles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.2.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.6.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.5.35" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Medusa.Analyze1553B.DI\Viewer.DI.csproj" />
+    <ProjectReference Include="..\Medusa.Analyze1553B.UIServices\Viewer.UIServices.csproj" />
+    <ProjectReference Include="..\Medusa.Analyze1553B.VMServices\Viewer.VMServices.csproj" />
+    <ProjectReference Include="..\Medusa.Analyze1553B.VM\Viewer.VM.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
+  </ItemGroup>
+
+</Project>
