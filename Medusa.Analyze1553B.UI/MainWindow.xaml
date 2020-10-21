@@ -15,9 +15,13 @@
         MinHeight="1024" Height="1024" 
         WindowState="Normal">
     <mah:MetroWindow.Resources>
+       
+
 
     </mah:MetroWindow.Resources>
-
+    <mah:MetroWindow.InputBindings>
+        <KeyBinding Command="{Binding Commands.OpenFolderCommand}" Modifiers="Ctrl" Key="N"/>
+    </mah:MetroWindow.InputBindings>
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
             <Menu Margin="10,0,10,0">
@@ -47,7 +51,15 @@
 
         <TreeView  x:Name="ViewModelTreeView"
                    ItemsSource="{Binding SelectedViewModel.Nodes}"
-                   Grid.Row="1" Grid.Column="0">
+                   Grid.Row="1" Grid.Column="0"
+                   VirtualizingStackPanel.IsVirtualizing="True">
+
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes}">
                     <StackPanel>
@@ -55,7 +67,8 @@
                         <TreeView ItemsSource="{Binding Files}">
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate>
-                                    <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        
                                         <StackPanel.Resources>
                                             <Style TargetType="TextBlock" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
                                                 <Setter Property="Foreground" Value="Gray" />
@@ -63,6 +76,8 @@
                                         </StackPanel.Resources>
 
                                         <TextBlock Text="{Binding FileName}"/>
+                                        <TextBlock Text=" = "/>
+                                        <TextBlock Text="{Binding SumOfBytes}"/>
                                     </StackPanel>
 
                                 </HierarchicalDataTemplate>

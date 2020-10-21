@@ -14,14 +14,6 @@ namespace Program.ByteSumCountingProgram.VM.ViewModels
         [Reactive] public ObservableCollection<Node> Nodes { get;set; }
         [Reactive] public ObservableCollectionExtended<MainModel> MainModels { get;}
         
-        private bool MoreThenFive(MainModel dataRecord)
-        {
-            return dataRecord.FirstNumber > 5;
-        }
-        private bool LessThenFive(MainModel dataRecord)
-        {
-            return dataRecord.FirstNumber < 5;
-        }
         private void CreateNodes()
         {
             Nodes = new ObservableCollection<Node>();

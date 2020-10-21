@@ -2,26 +2,9 @@
 using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Data;
-using System.Xml;
-using System.Text;
-using System.Xml.Schema;
-using System.Xml.Linq;
-using System.IO;
 using ReactiveUI;
 using Program.ByteSumCountingProgram.UIServices;
 using Program.ByteSumCountingProgram.VMServices;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive;
-using Program.ByteSumCountingProgram.VM;
-using System.Net.Sockets;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Threading;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace Program.ByteSumCountingProgram.VM
 {
@@ -37,13 +20,8 @@ namespace Program.ByteSumCountingProgram.VM
         #region Commands
 
         public ICommand DoNothingCommand { get; }
-        public ICommand CreateManagerOfViewModelsCommand { get;}
-        public ICommand AddViewModelCommand  { get; }
         public ICommand OpenFolderCommand { get; }
-        public ICommand AddItemCommand { get; }
-        public ICommand CloseSomethingCommand { get; }
-        public ICommand GetDataFromFileCommand { get; }
-        
+
 
         #endregion
 
@@ -58,10 +36,6 @@ namespace Program.ByteSumCountingProgram.VM
             DoNothingCommand = CreateCommand<object>(DoNothing);
             OpenFolderCommand = CreateCommand(OpenFolder);
 
-
-            
-           
-            GetDataFromFileCommand = CreateCommand(GetDataFromFile);
         }
 
        
@@ -73,7 +47,6 @@ namespace Program.ByteSumCountingProgram.VM
         ICommand CreateCommand(Action command) => ReactiveCommand.Create(command, outputScheduler: scheduler);
 
         ICommand CreateCommand<T>(Action<T> command) => ReactiveCommand.Create(command, outputScheduler: scheduler);
-
 
     }
 }

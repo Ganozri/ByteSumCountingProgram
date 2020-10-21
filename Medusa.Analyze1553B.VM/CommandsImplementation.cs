@@ -8,41 +8,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Viewer.VM;
+using System.Linq;
 
 namespace Program.ByteSumCountingProgram.VM
 {
     public partial class Commands
     {
-       
-        private void GetDataFromFile()
-        {
-            if (vmObject.SelectedViewModel != null)
-            {
-                using (StreamReader reader = new StreamReader(vmObject.SelectedViewModel.DialogService.ShowOpenFileDialog()))
-                {
-                    string path = reader.ReadToEnd();
-                    if (File.Exists(path))
-                    {
-                        vmObject.SelectedViewModel.MainModels.Clear();
-
-                        var rawData = dataService.GetData(path, vmObject.SelectedViewModel);
-
-                        //vmObject.SelectedViewModel.MainModels.AddRange(rawData);
-                        _ = FactorialAsync(vmObject,rawData);
-                    }
-                }
-            }
-            else
-            {
-                dialogService.ShowMessage("Не выбран тип продукта!");
-            }
-           
-        }
         private void OpenFolder()
         {
             string root = vmObject.SelectedViewModel.DialogService.ShowOpenFolderDialog();
             if (Directory.Exists(root))
             {
+                vmObject.SelectedViewModel.Nodes.Clear();
+
                 Node node = new();
                 _ = CreateNestedFolderAsync(node, root);
                 vmObject.SelectedViewModel.Nodes.Add(node);
@@ -52,23 +31,40 @@ namespace Program.ByteSumCountingProgram.VM
                 dialogService.ShowMessage("Что-то пошло не так!");
             }
         }
+
         static string GetEndPartOfPath(string fullPath)
         {
             string[] words = fullPath.Split(new char[] { '\\' });
             return words[words.Length-1];
         }
-        static async Task CreateNestedFolderAsync(Node node,string root)
+
+        static void ProcessFile(ObservableCollection<FileInformation> fileInformation,string path)
+        {
+            long result = 0;
+            foreach (var line in File.ReadLines(path))
+            {
+                byte[] str = Encoding.Default.GetBytes(line);
+                foreach (var currentByte in str)
+                {
+                    result += currentByte;
+                }
+                result += line.Length;
+            }
+            fileInformation.Add(new(GetEndPartOfPath(path), result));
+        }
+        // определение асинхронного метода
+        static async Task CreateNestedFolderAsync(Node node, string root)
         {
             node.Name = GetEndPartOfPath(root);
 
             node.Files = new();
+
             var files = System.IO.Directory.GetFiles(root + "\\");
-            
-            foreach (var item in files)
-            {
-                node.Files.Add(new(GetEndPartOfPath(item),1));
-            }
-            
+
+            IEnumerable<string> paths = files;
+            var processTasks = paths.Select(p => Task.Run(() => ProcessFile(node.Files,p)));
+            _ =  Task.WhenAll(processTasks);
+
             var topDirectories = Directory.GetDirectories(root, "*", SearchOption.TopDirectoryOnly);
             if (topDirectories.Length > 0)
             {
@@ -76,45 +72,18 @@ namespace Program.ByteSumCountingProgram.VM
                 foreach (var dir in topDirectories)
                 {
                     Node n = new();
-                    node.Nodes.Add(n);
                     _ = CreateNestedFolderAsync(n, dir);
+                    node.Nodes.Add(n);
 
-                    //await Task.Delay(1);
-                }
-            }
-        }
-
-        //TODO
-        // определение асинхронного метода
-        static async Task FactorialAsync(IVmObject vmObject, MainModel[] rawData)
-        {
-            if (rawData.Length > 1000)
-            {
-                int offset = 20;
-                int count = 15;
-                for (int i = 0; i < count; i++)
-                {
-                    ArraySegment<MainModel> firstRecords = new ArraySegment<MainModel>(rawData, i * offset, offset);
-                    vmObject.SelectedViewModel.MainModels.AddRange(firstRecords);
+                    //TODO so easy way to async
                     await Task.Delay(1);
+                    //TODO
                 }
-                ArraySegment<MainModel> lastRecords = new ArraySegment<MainModel>(rawData, offset*count, rawData.Length-offset*count);
-                vmObject.SelectedViewModel.MainModels.AddRange(lastRecords);
-            }
-            else
-            {
-                vmObject.SelectedViewModel.MainModels.AddRange(rawData);
             }
         }
-        //TODO
-        
-       
-      
-       
         private void DoNothing(object obj)
         {
-            //dialogService.ShowMessage(obj.ToString());
-            
+            dialogService.ShowMessage(obj.ToString());
         }
     }
 }
