@@ -22,10 +22,6 @@ namespace Program.ByteSumCountingProgram.UI
     /// </summary>
     public partial class MainWindow : MetroWindow, ISynchronizationContextProvider, IDialogService
     {
-        readonly Microsoft.Win32.OpenFileDialog openFileDlg;
-        readonly Microsoft.Win32.SaveFileDialog saveFileDialog;
-        public string Filter { get; set; }
-
         public SynchronizationContext SynchronizationContext { get; }
 
         public MainWindow()
@@ -33,24 +29,6 @@ namespace Program.ByteSumCountingProgram.UI
             InitializeComponent();
           
             SynchronizationContext = SynchronizationContext.Current;
-
-            if (Filter==null)
-            {
-                this.Filter += "All files (*.*)|*.*";
-            }
-            else
-            {
-                this.Filter += "|All files (*.*)|*.*";
-            }
-           
-            openFileDlg = new Microsoft.Win32.OpenFileDialog
-            {
-                Filter = this.Filter
-            };
-            saveFileDialog = new Microsoft.Win32.SaveFileDialog()
-            {
-                Filter = this.Filter
-            };
         }
 
     }

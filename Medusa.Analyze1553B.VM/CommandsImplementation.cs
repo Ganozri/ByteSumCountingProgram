@@ -74,16 +74,17 @@ namespace Program.ByteSumCountingProgram.VM
                     Node n = new();
                     _ = CreateNestedFolderAsync(n, dir);
                     node.Nodes.Add(n);
-
                     //TODO so easy way to async
                     await Task.Delay(1);
                     //TODO
                 }
             }
         }
+
         private void DoNothing(object obj)
         {
             dialogService.ShowMessage(obj.ToString());
         }
+
     }
 }

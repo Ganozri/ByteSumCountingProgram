@@ -9,6 +9,7 @@ namespace Program.ByteSumCountingProgram.VM
     public interface IPageViewModel 
     {
         string Name { get;set;}
+
         ObservableCollection<Node> Nodes { get; set; }
 
         ObservableCollectionExtended<MainModel> MainModels { get;}
