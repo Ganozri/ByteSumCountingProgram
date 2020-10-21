@@ -8,13 +8,7 @@ namespace Program.ByteSumCountingProgram.UIServices
         MemoryStream ShowOpenFileDialog();
         MemoryStream ShowSaveFileDialog();
 
-        void CreateCustomWindow();
-        void ScrollIntoView(object arg, int pos);
-        void UpdateView(object arg);
-        void AddText(object arg, string text);
-        int CurrentPosition(object arg);
-        void CreateChoosePageViewModelControl(object arg);
-
+        string ShowOpenFolderDialog();
         string Filter { get; set; }
     }
 }

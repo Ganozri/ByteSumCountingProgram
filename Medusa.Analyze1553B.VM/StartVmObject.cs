@@ -21,7 +21,6 @@ namespace Program.ByteSumCountingProgram.VM
         public Commands Commands { get; }
         [Reactive] public object VmObject { get; private set; }
 
-        [Reactive] public ObservableCollection<IPageViewModel> ViewModels { get; set; }
         [Reactive] public IPageViewModel SelectedViewModel { get; set; }
 
         public ObservableCollection<Type> Types { get; set; }
@@ -35,10 +34,11 @@ namespace Program.ByteSumCountingProgram.VM
 
             Types = GetTypes();
 
-            ViewModels = new ObservableCollection<IPageViewModel>();
-            ViewModels.Add(new FirstViewModel(syncContext,dialogService,dataService,Commands));
-
             
+            SelectedViewModel = new FirstViewModel(syncContext, dialogService, dataService, Commands);
+
+
+
 
 
         }

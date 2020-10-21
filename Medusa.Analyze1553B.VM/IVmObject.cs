@@ -10,7 +10,6 @@ namespace Program.ByteSumCountingProgram.VM
 
         public Commands Commands { get; }
 
-        public ObservableCollection<IPageViewModel> ViewModels { get; set; }
         public IPageViewModel SelectedViewModel { get; set; }
 
         public ObservableCollection<Type> Types { get; set; }

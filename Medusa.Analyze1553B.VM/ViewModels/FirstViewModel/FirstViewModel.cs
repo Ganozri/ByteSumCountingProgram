@@ -12,8 +12,6 @@ namespace Program.ByteSumCountingProgram.VM.ViewModels
     {
         [Reactive] public string Name { get;set;}
         [Reactive] public ObservableCollection<Node> Nodes { get;set; }
-        [Reactive] public ObservableCollection<Item> Items { get;set; }
-        [Reactive] public Item SelectedItem { get; set; }
         [Reactive] public ObservableCollectionExtended<MainModel> MainModels { get;}
         
         private bool MoreThenFive(MainModel dataRecord)
@@ -26,34 +24,9 @@ namespace Program.ByteSumCountingProgram.VM.ViewModels
         }
         private void CreateNodes()
         {
-            Nodes = new ObservableCollection<Node>
-            {
-                new Node
-                {
-                    Name = "Общее",
-                    type = typeof(ReadableMainModel),
-                    Nodes = new ObservableCollection<Node>
-                    {
-                        new Node
-                        {
-                            Name ="Больше пяти",
-                            type = typeof(FirstRecord),
-                            FiltrationCondition = MoreThenFive,
-                        },
-                        new Node 
-                        {
-                            Name ="Меньше пяти",
-                            FiltrationCondition = LessThenFive,
-                            type = typeof(SecondRecord),
-                        }
-                    }
-                }
-            };
+            Nodes = new ObservableCollection<Node>();
         }
-        private void CreateItems()
-        {
-            Items = new ObservableCollection<Item>();
-        }
+       
 
         public FirstViewModel(ISynchronizationContextProvider syncContext, IDialogService dialogService, IDataService dataService, Commands Commands)
         {
@@ -66,12 +39,7 @@ namespace Program.ByteSumCountingProgram.VM.ViewModels
 
             MainModels = new ObservableCollectionExtended<MainModel>();
             CreateNodes();
-            CreateItems();
 
-            if (Nodes.Count>0)
-            {
-                Items.Add(new Item(MainModels, Nodes[0]));
-            }
            
         }
     }

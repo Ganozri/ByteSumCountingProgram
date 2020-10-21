@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viewer.VM", "Medusa.Analyze
 		{BE6419C5-994B-4E21-8CC8-036E4EF24E74} = {BE6419C5-994B-4E21-8CC8-036E4EF24E74}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewerModel", "Model\ViewerModel.csproj", "{F6F8E5AF-5AFD-4013-AD27-BF5030B918F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viewer.Model", "Model\Viewer.Model.csproj", "{F6F8E5AF-5AFD-4013-AD27-BF5030B918F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

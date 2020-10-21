@@ -10,8 +10,7 @@ namespace Program.ByteSumCountingProgram.VM
     {
         string Name { get;set;}
         ObservableCollection<Node> Nodes { get; set; }
-        ObservableCollection<Item> Items { get;set;}
-        Item SelectedItem { get;set;}
+
         ObservableCollectionExtended<MainModel> MainModels { get;}
 
         IDialogService DialogService { get; set; }

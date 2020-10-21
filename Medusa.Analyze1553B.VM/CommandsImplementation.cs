@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Program.ByteSumCountingProgram.VM
 {
@@ -15,7 +16,7 @@ namespace Program.ByteSumCountingProgram.VM
        
         private void GetDataFromFile()
         {
-            if (vmObject.ViewModels.Count > 0 && vmObject.SelectedViewModel != null)
+            if (vmObject.SelectedViewModel != null)
             {
                 using (StreamReader reader = new StreamReader(vmObject.SelectedViewModel.DialogService.ShowOpenFileDialog()))
                 {
@@ -36,6 +37,51 @@ namespace Program.ByteSumCountingProgram.VM
                 dialogService.ShowMessage("Не выбран тип продукта!");
             }
            
+        }
+        private void OpenFolder()
+        {
+            string root = vmObject.SelectedViewModel.DialogService.ShowOpenFolderDialog();
+            if (Directory.Exists(root))
+            {
+                Node node = new();
+                _ = CreateNestedFolderAsync(node, root);
+                vmObject.SelectedViewModel.Nodes.Add(node);
+            }
+            else
+            {
+                dialogService.ShowMessage("Что-то пошло не так!");
+            }
+        }
+        static string GetEndPartOfPath(string fullPath)
+        {
+            string[] words = fullPath.Split(new char[] { '\\' });
+            return words[words.Length-1];
+        }
+        static async Task CreateNestedFolderAsync(Node node,string root)
+        {
+            node.Name = GetEndPartOfPath(root);
+
+            node.Files = new();
+            var files = System.IO.Directory.GetFiles(root + "\\");
+            
+            foreach (var item in files)
+            {
+                node.Files.Add(new(GetEndPartOfPath(item),1));
+            }
+            
+            var topDirectories = Directory.GetDirectories(root, "*", SearchOption.TopDirectoryOnly);
+            if (topDirectories.Length > 0)
+            {
+                node.Nodes = new ObservableCollection<Node>();
+                foreach (var dir in topDirectories)
+                {
+                    Node n = new();
+                    node.Nodes.Add(n);
+                    _ = CreateNestedFolderAsync(n, dir);
+
+                    //await Task.Delay(1);
+                }
+            }
         }
 
         //TODO
@@ -61,47 +107,10 @@ namespace Program.ByteSumCountingProgram.VM
             }
         }
         //TODO
-        private void AddViewModel(IPageViewModel pageViewModel)
-        {
-            vmObject.ViewModels.Add(pageViewModel);
-        }
-        private void CloseSomething(object obj)
-        {
-            switch (obj)
-            {
-                case IPageViewModel t1: vmObject.ViewModels.Remove((IPageViewModel)obj);break;
-                case Item t2:vmObject.SelectedViewModel.Items.Remove((Item)obj);break;
-                default: break;
-            }
-        }
-        private void CreateManagerOfViewModels()
-        {
-            new ChoosePageViewModel(syncContext,dialogService,dataService,this);
-        }
-        private void AddItem(object obj)
-        {
-            if (obj != null)
-            {
-                if (obj is Node node)
-                {
-                    bool IsRepeat = false;
-                    foreach (var item in vmObject.SelectedViewModel.Items)
-                    {
-                        if (item.Name == node.Name)
-                        {
-                            IsRepeat = true;
-                            break;
-                        }
-                    }
-                    if (!IsRepeat)
-                    {
-                        vmObject.SelectedViewModel.Items.Add(new Item(vmObject.SelectedViewModel.MainModels,node));
-                    }
-                }
-
-
-            }
-        }
+        
+       
+      
+       
         private void DoNothing(object obj)
         {
             //dialogService.ShowMessage(obj.ToString());

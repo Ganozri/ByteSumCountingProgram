@@ -39,7 +39,7 @@ namespace Program.ByteSumCountingProgram.VM
         public ICommand DoNothingCommand { get; }
         public ICommand CreateManagerOfViewModelsCommand { get;}
         public ICommand AddViewModelCommand  { get; }
-
+        public ICommand OpenFolderCommand { get; }
         public ICommand AddItemCommand { get; }
         public ICommand CloseSomethingCommand { get; }
         public ICommand GetDataFromFileCommand { get; }
@@ -55,12 +55,12 @@ namespace Program.ByteSumCountingProgram.VM
             this.scheduler      = new SynchronizationContextScheduler(syncContext.SynchronizationContext);
             this.syncContext    = syncContext;
 
-            DoNothingCommand                = CreateCommand<object>(DoNothing);
-            CreateManagerOfViewModelsCommand = CreateCommand(CreateManagerOfViewModels);
-            AddViewModelCommand = CreateCommand<IPageViewModel>(AddViewModel);
+            DoNothingCommand = CreateCommand<object>(DoNothing);
+            OpenFolderCommand = CreateCommand(OpenFolder);
+
+
+            
            
-            AddItemCommand = CreateCommand<object>(AddItem);
-            CloseSomethingCommand = CreateCommand<object>(CloseSomething);
             GetDataFromFileCommand = CreateCommand(GetDataFromFile);
         }
 
