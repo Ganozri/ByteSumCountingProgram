@@ -14,10 +14,4 @@
     <ProjectReference Include="..\Model\Viewer.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Parsers">
-      <HintPath>..\Parsers\bin\Debug\netstandard2.0\Parsers.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

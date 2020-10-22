@@ -3,7 +3,6 @@ using System.IO;
 using System.Windows;
 using Program.ByteSumCountingProgram.DI;
 using Program.ByteSumCountingProgram.UI;
-using Program.ByteSumCountingProgram.UI.Views;
 using Program.ByteSumCountingProgram.UIServices;
 using Program.ByteSumCountingProgram.VM;
 using Program.ByteSumCountingProgram.VMServices;
